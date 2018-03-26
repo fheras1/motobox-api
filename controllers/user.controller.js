@@ -5,21 +5,27 @@ const ApiError = require('../models/api-error.model');
 module.exports.create = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then(user => {
-      if (user) {
+      if (user != null) {
         next(new ApiError('User already registered', 400));
       } else {
-        user = new User(req.body);
-        user.save()
+        user = new User({
+          email: req.body.email,
+          password: req.body.password
+        });
+
+        user
+          .save()
           .then(() => {
-            res.json(user);
+            res.status(200).json({ message: 'Success' });
           })
           .catch(error => {
             if (error instanceof mongoose.Error.ValidationError) {
-              next(new ApiError(error.message, 400, error.errors));
+              next(new ApiError(error.errors, 400));
             } else {
               next(error);
             }
           });
       }
-    }).catch(error => next(new ApiError('User already registered', 500)));
+    })
+    .catch(error => next(error));
 }

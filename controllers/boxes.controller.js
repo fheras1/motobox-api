@@ -22,15 +22,13 @@ module.exports.get = (req, res, next) => {
 
 module.exports.create = (req, res, next) => {
   const box = new Box(req.body);
-  if (req.file) {
-    box.image = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-  }
   box.save()
     .then(() => {
       res.status(201).json(box);
     })
     .catch(error => {
       if (error instanceof mongoose.Error.ValidationError) {
+        console.log(error);
         next(new ApiError(error.errors));
       } else {
         next(new ApiError(error.message, 500));
@@ -52,22 +50,12 @@ module.exports.delete = (req, res, next) => {
 
 module.exports.edit = (req, res, next) => {
   const id = req.params.id;
-  if (req.file) {
-    body.image = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-  }
-  
   Box.findByIdAndUpdate(id, { $set: req.body }, { new: true })
     .then(box => {
       if (box) {
-        res.json(box)
+        res.status(200).json(box)
       } else {
         next(new ApiError(`Box not found`, 404));
       }
-    }).catch(error => {
-      if (error instanceof mongoose.Error.ValidationError) {
-        next(new ApiError(error.message, 400, error.errors));
-      } else {
-        next(new ApiError(error.message, 500));
-      }
-    });
+    }).catch(error => next(error));
 }
