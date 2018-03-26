@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const phoneSchema = new mongoose.Schema({
+const boxSchema = new mongoose.Schema({
     direction: {
         type: String,
         required: [true, 'The box direction is required']
