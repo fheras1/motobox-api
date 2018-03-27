@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
-const phoneSchema = new mongoose.Schema({
-    direction: {
+const boxSchema = new mongoose.Schema({
+    address: {
         type: String,
-        required: [true, 'The box direction is required']
+        required: [true, 'The box adress is required']
     },
     name: {
         type: String,
         required: [true, 'The box name is required']
+    },
+        contact: {
+        type: String,
+        required: [true, 'The box contact is required']
     },
     image: {
         type: String,
