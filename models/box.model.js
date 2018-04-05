@@ -8,7 +8,7 @@ const boxSchema = new mongoose.Schema({
         type: String,
         required: [true, 'The box name is required']
     },
-        contact: {
+    contact: {
         type: String,
         required: [true, 'The box contact is required']
     },
