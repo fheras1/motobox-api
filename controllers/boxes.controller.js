@@ -22,6 +22,7 @@ module.exports.get = (req, res, next) => {
 
 module.exports.create = (req, res, next) => {
   const box = new Box(req.body);
+  box.image = (process.env.HOST || 'http://localhost:3000') + req.file.path.split('public')[1];
   box.save()
     .then(() => {
       res.status(201).json(box);
