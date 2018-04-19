@@ -6,10 +6,9 @@ const boxMiddleware = require('../middleware/boxes.middleware');
 const secureMiddleware = require('../middleware/secure.middleware');
 
 router.get('/', boxController.list);
-router.get('/:id', secureMiddleware.isAuthenticated, boxMiddleware.checkValidId, boxController.get);
+router.get('/:id', boxMiddleware.checkValidId, boxController.get);
 router.post('/', secureMiddleware.isAuthenticated, uploadConfig.single('image'), boxController.create);
 router.put('/:id', secureMiddleware.isAuthenticated, uploadConfig.single('image'), boxController.edit);
 router.delete('/:id', secureMiddleware.isAuthenticated, boxMiddleware.checkValidId, boxController.delete);
-
 
 module.exports = router;
